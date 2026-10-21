@@ -141,6 +141,15 @@ for i in "${!STEP_NAMES[@]}"; do
     missing_input=1
   fi
   produced+=("${STEP_OUTPUTS[$i]}")
+  # cc and annot also read a file versioned in the repo's datasets/: check it now, not after scran.
+  aux=""
+  [ "${STEP_NAMES[$i]}" = "cc" ] && aux="$CC_GENES"
+  [ "${STEP_NAMES[$i]}" = "annot" ] && aux="$DATA_DIR/Cells_Adult_Breast.pkl"
+  if [ -n "$aux" ] && [ ! -f "$aux" ]; then
+    echo "[error] ${STEP_NAMES[$i]}: missing $aux" >&2
+    echo "        copy it from the repo's datasets/ into DATA_DIR." >&2
+    missing_input=1
+  fi
 done
 if [ "$missing_input" -eq 1 ]; then
   [ "$DRY_RUN" -eq 0 ] && exit 1
@@ -222,6 +231,10 @@ for i in "${!STEP_NAMES[@]}"; do
   n_run=$((n_run + 1))
 done
 
+if [ "$DRY_RUN" -eq 1 ]; then
+  echo "dry run: $n_run step(s) would run, $n_have already done, $n_skip filtered out"
+  exit 0
+fi
 echo "==================================================================="
 echo "done in $(( (SECONDS - overall_start) / 60 ))m$(( (SECONDS - overall_start) % 60 ))s: \
 $n_run step(s) run, $n_have already done, $n_skip filtered out"

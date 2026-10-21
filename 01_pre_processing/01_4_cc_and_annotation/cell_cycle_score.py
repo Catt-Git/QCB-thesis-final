@@ -1,5 +1,5 @@
 """
-01_4_cell_cycle: cell cycle phase scoring (Tirosh et al. 2016 signature).
+01_4 cell_cycle_score: cell cycle phase scoring (Tirosh et al. 2016 signature).
 
 Input : $DATA_DIR/all_samples_combined_scrublet_norm.h5ad
         Output of 01_3. .X = scran log-normalized (scoring requires log-norm, not raw);
@@ -7,12 +7,11 @@ Input : $DATA_DIR/all_samples_combined_scrublet_norm.h5ad
 Output: $DATA_DIR/all_samples_combined_scrublet_norm_cc.h5ad
         Adds .obs['S_score'], .obs['G2M_score'], .obs['phase'].
 
-Requires the Tirosh/Regev cell cycle gene list (97 genes: 43 S + 54 G2M) present in the dataset, 
-one gene symbol per line, path via $CC_GENES env var.
+Requires the Tirosh/Regev cell cycle gene list (97 genes: 43 S + 54 G2M), one symbol per line,
+read from $CC_GENES [default: $DATA_DIR/regev_lab_cell_cycle_genes.txt].
 
 Usage:
   export DATA_DIR=<data root>
-  export CC_GENES=$DATA_DIR/regev_lab_cell_cycle_genes.txt
   python3 cell_cycle_score.py
 """
 
@@ -28,8 +27,8 @@ DATA_DIR = os.environ["DATA_DIR"]
 IN_PATH = os.path.join(DATA_DIR, "all_samples_combined_scrublet_norm.h5ad")
 OUT_PATH = os.path.join(DATA_DIR, "all_samples_combined_scrublet_norm_cc.h5ad")
 
-# Cell cycle gene list from env. Tirosh/Regev standard file
-CC_GENES = os.environ["CC_GENES"]
+# Cell cycle gene list, same default as preprocessing_all.sh
+CC_GENES = os.environ.get("CC_GENES", os.path.join(DATA_DIR, "regev_lab_cell_cycle_genes.txt"))
 
 print("Loading data...", flush=True)
 adata = sc.read_h5ad(IN_PATH)

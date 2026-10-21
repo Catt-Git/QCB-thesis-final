@@ -115,11 +115,9 @@ print(f"Wrote {OUT_PATH}", flush=True)
 
 
 print("Generating normalization diagnostics...", flush=True)
-# Diagnostic figures live inside the repo at 01_preprocessing/figures, versioned as
-# lightweight QC evidence. Anchored to this script's location, then up one level:
-# script is in 01_preprocessing/01_3_normalization/, figures/ sits in 01_preprocessing/.
+# Diagnostic figures go to 01_pre_processing/figures/, anchored to this script's location.
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PHASE_DIR = os.path.dirname(SCRIPT_DIR)  # 01_preprocessing/
+PHASE_DIR = os.path.dirname(SCRIPT_DIR)  # 01_pre_processing/
 FIG_DIR = os.environ.get("FIG_DIR", os.path.join(PHASE_DIR, "figures", "01_3_normalization"))
 os.makedirs(FIG_DIR, exist_ok=True)
 

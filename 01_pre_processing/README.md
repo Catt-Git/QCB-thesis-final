@@ -9,9 +9,11 @@ input of the integration benchmark (phase 02).
 - Conda environment `benchmark-py-r` (`environments/benchmark-py-r.yml`): scanpy, scib, CellTypist,
   and rpy2 + R scran for the normalization.
 - `$DATA_DIR/all_samples_combined.h5ad` from phase 00, plus `regev_lab_cell_cycle_genes.txt` and
-  `Cells_Adult_Breast.pkl` (both versioned in `datasets/`).
+  `Cells_Adult_Breast.pkl`, versioned in `datasets/` and read from `$DATA_DIR`: if `DATA_DIR` is
+  not the clone's `datasets/`, copy them there first (`preprocessing_all.sh` checks it before scran).
 - ~470G of RAM for scran on 619k cells. In the thesis only this step ran on the cluster; everything
-  else ran locally. The `module load` lines of the `.slurm` files are specific to the thesis cluster.
+  else ran locally. The `module load` lines and the default `DATA_DIR` of the `.slurm` files are
+  specific to the thesis cluster.
 
 ## Quick start
 
@@ -89,8 +91,7 @@ The repo keeps only the figures, in `figures/<step>/`.
 
 ## Expected output
 
-`shiao.h5ad` should contain (numbers from the thesis object, built with an earlier gene filter
-with `min_cells=1`; the current code with `min_cells=3` gives 619,692 cells × 29,206 genes):
+`shiao.h5ad` should contain:
 
 - **619,693 cells × 30,869 genes**, 34 patients, 48 of the 58 CellTypist labels.
 - `.X` = scran log-normalized (do not log1p again); `.layers['counts']` = raw counts;

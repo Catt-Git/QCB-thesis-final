@@ -14,7 +14,7 @@ Output: $DATA_DIR/all_samples_combined_scrublet_norm_cc_annotated_reduced.h5ad
         adds .var['highly_variable'] (binary, batch-aware), .obsm['X_pca'],
         neighbors graph, .obsm['X_umap']
         $DATA_DIR/shiao_hvg_2k_unintegrated_list.csv
-        gene symbol + Ensembl id of the selected HVGs (one row per gene)
+        gene symbols of the selected HVGs, one per line, no header
 
 Usage:
   export DATA_DIR=<data root>
@@ -93,7 +93,6 @@ print(f"Wrote {len(hvg_genes)} HVGs to {HVG_CSV_PATH}")
 
 # Diagnostic figures
 sc.pl.pca_variance_ratio(adata, n_pcs=50, log=True, save="_elbow.png")
-sc.pl.pca(adata, color="fraction", save="_fraction.png")
 sc.pl.pca(adata, color="cell_type", save="_cell_type.png")
 sc.pl.umap(adata, color="cell_type", save="_cell_type.png") 
 

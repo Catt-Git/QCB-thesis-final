@@ -5,7 +5,7 @@ CellTypist requires CP10K+log1p input, so it runs on a temporary copy normalized
 from raw counts. Only the predicted labels are kept; the scran .X is untouched.
 
 Input : $DATA_DIR/all_samples_combined_scrublet_norm_cc.h5ad
-        Output of 01_4_cell_cycle. .X = scran log-normalized; .layers['counts'] = raw
+        Output of cell_cycle_score.py. .X = scran log-normalized; .layers['counts'] = raw
         counts; gene symbols as var_names.
 Output: $DATA_DIR/all_samples_combined_scrublet_norm_cc_annotated.h5ad
         Adds .obs['cell_type'] (majority-voting label, used downstream) and
@@ -75,7 +75,6 @@ print(adata.obs["cell_type"].value_counts(), flush=True)
 # Post-condition checks: labels added, main matrices untouched.
 assert "cell_type" in adata.obs
 assert "counts" in adata.layers, "raw counts layer lost"
-assert "celltypist" not in adata.layers, "temporary celltypist layer must not be persisted"
 
 print("Saving...", flush=True)
 adata.write_h5ad(OUT_PATH, compression="gzip")

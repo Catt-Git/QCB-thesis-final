@@ -37,8 +37,6 @@ logs/
 # ---------------------------------------------------------------------------
 # Dati: tutto escluso (decine di GB, ben oltre il limite di 100 MB per file di
 # GitHub). Fanno eccezione i pochi input piccoli e non rigenerabili qui sotto.
-# Nota: smoke_fixture.h5ad NON e' fra le eccezioni perche' lo produce il codice
-# (smoke_test_metrics.py), quindi si ricrea da solo.
 # ---------------------------------------------------------------------------
 /datasets/*
 !/datasets/README.md
@@ -49,6 +47,10 @@ logs/
 # versionate: tutto cio' che 04_3 produce dipende dall'essere esattamente questi file.
 !/datasets/signatures/
 !/datasets/signatures/*.txt
+
+# Output degli smoke test di 02 (fixture, integrazioni, metriche): usa e getta,
+# li rigenerano gli script di utils/ (SMOKE_DIR per spostarli altrove).
+/02_integration_benchmark/utils/smoke_test/
 
 # ---------------------------------------------------------------------------
 # Modelli DRVI addestrati (cartella temporanea, ~1.3 GB di embedding e pesi)

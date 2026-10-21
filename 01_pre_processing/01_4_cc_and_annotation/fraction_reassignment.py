@@ -14,7 +14,7 @@ The lineage sets below match the Cells_Adult_Breast.pkl model (58 labels).
 'Lymph-*' are lymphatic endothelial cells, not lymphocytes, so they are non-immune.
 
 Input : $DATA_DIR/all_samples_combined_scrublet_norm_cc_annotated.h5ad
-        Output of 01_4_celltypist_annotation. Must contain .obs['cell_type'] and .obs['fraction'].
+        Output of celltypist_annotation.py. Must contain .obs['cell_type'] and .obs['fraction'].
 Output: same file (in-place). Only .obs['fraction'] changes (CD45+/CD45- -> imm/non_imm);
         everything else, including .obs['dataset_origin'], is untouched.
 
