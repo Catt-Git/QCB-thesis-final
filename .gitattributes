@@ -1,0 +1,5 @@
+# Shell, SLURM and R scripts always with LF line endings, whatever core.autocrlf the clone uses:
+# with CRLF, bash fails on the cluster with "$'\r': command not found".
+*.sh    text eol=lf
+*.slurm text eol=lf
+*.R     text eol=lf

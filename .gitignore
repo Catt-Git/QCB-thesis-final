@@ -1,0 +1,63 @@
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.pyc
+
+# ---------------------------------------------------------------------------
+# Run logs
+#   00_raw_data_processing/logs/ -> rawprocessing_all.sh (uno per invocazione, timestamped)
+#   01_pre_processing/logs/ -> preprocessing_all.sh (uno per invocazione, timestamped)
+#                              + #SBATCH --output/--error di submit_preprocessing_all.slurm
+#   03_1_subsetting/logs/  -> subsetting_all.sh (uno per invocazione, timestamped)
+#   02_2_integration/logs/ -> #SBATCH --output/--error di submit_integration.slurm
+#                              + submit_drvi.slurm
+#   03_2_drvi_run/logs/    -> idem per submit_drvi_nonimm.slurm
+#   02_4_metrics/logs/     -> idem per submit_metrics.slurm
+# ---------------------------------------------------------------------------
+logs/
+
+# Log SLURM scritti accanto al proprio .slurm (#SBATCH --output=%x_%j.out senza logs/):
+# tutti gli step di 00, submit_scran_norm.slurm, submit_smoke_test.slurm. Piu' il
+# report di verify_integrity (00_3), che ha lo stesso nome del job.
+*.out
+*.err
+/00_raw_data_processing/00_3_download/*.report
+
+# ---------------------------------------------------------------------------
+# Metadati che Windows aggiunge ai file copiati (Alternate Data Stream visibili da WSL)
+# ---------------------------------------------------------------------------
+*:Zone.Identifier
+
+# ---------------------------------------------------------------------------
+# Jupyter
+# ---------------------------------------------------------------------------
+.ipynb_checkpoints/
+
+# ---------------------------------------------------------------------------
+# Dati: tutto escluso (decine di GB, ben oltre il limite di 100 MB per file di
+# GitHub). Fanno eccezione i pochi input piccoli e non rigenerabili qui sotto.
+# Nota: smoke_fixture.h5ad NON e' fra le eccezioni perche' lo produce il codice
+# (smoke_test_metrics.py), quindi si ricrea da solo.
+# ---------------------------------------------------------------------------
+/datasets/*
+!/datasets/README.md
+!/datasets/Cells_Adult_Breast.pkl
+!/datasets/regev_lab_cell_cycle_genes.txt
+# signatures/: le liste di Helena lette da 04_3 (SIG_DIR). Stessa classe delle due
+# eccezioni qui sopra - input esterni, pochi KB, non rigenerabili dal codice - quindi
+# versionate: tutto cio' che 04_3 produce dipende dall'essere esattamente questi file.
+!/datasets/signatures/
+!/datasets/signatures/*.txt
+
+# ---------------------------------------------------------------------------
+# Modelli DRVI addestrati (cartella temporanea, ~1.3 GB di embedding e pesi)
+# ---------------------------------------------------------------------------
+/drvi/
+
+# ---------------------------------------------------------------------------
+# Figure e tabelle della v1 di 05: superate dai nuovi run (InferCNV, figure
+# verdi). Tenute in locale come riferimento ma fuori da git.
+# ---------------------------------------------------------------------------
+/05_drvi_tumoral_epi/figures_v1/
+/05_drvi_tumoral_epi/tables_v1/

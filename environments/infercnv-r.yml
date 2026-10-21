@@ -1,0 +1,12 @@
+name: infercnv-r
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - r-base=4.5
+  - bioconductor-infercnv=1.26.0
+  - r-rjags
+  - jags
+  - r-optparse
+  - r-matrix
+  - r-jsonlite
