@@ -20,7 +20,7 @@ conda env create -f environments/benchmark-py-r.yml
 conda activate benchmark-py-r
 ```
 
-Then run the code as described in each phase's README (`export DATA_DIR=...` first).
+Then run the code as described in each phase's README (`export DATA_DIR=<data root>` first).
 
 - Local machine: `benchmark-py-r`.
 - Cluster / SLURM: `benchmark-py-r` (same env, same name).

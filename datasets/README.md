@@ -4,7 +4,7 @@ Where every heavy object of the thesis lives. The scripts never hardcode this pa
 `DATA_DIR` from the environment and exit with an explanatory message if it is unset.
 
 ```bash
-export DATA_DIR=~/Desktop/QCB-Master-Thesis/datasets
+export DATA_DIR=<data root>
 ```
 
 The clone itself can sit anywhere: no script contains the repo's path (they self-locate via
@@ -42,6 +42,7 @@ Everything else is rebuilt by re-running the phase that writes it.
 
 | File | Step |
 |---|---|
+| `all_samples_combined_scrublet_unfiltered.h5ad` | 01_2, checkpoint after Scrublet, before filtering |
 | `all_samples_combined_scrublet.h5ad` | 01_2, QC + Scrublet + filters |
 | `all_samples_combined_scrublet_norm.h5ad` | 01_3, scran log-normalization |
 | `all_samples_combined_scrublet_norm_cc.h5ad` | 01_4, + cell cycle |
