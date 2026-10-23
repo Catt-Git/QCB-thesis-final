@@ -16,7 +16,7 @@ storage and never leave it.
   paper), downloaded once and pointed to by `REF`:
   ```bash
   curl -O https://cf.10xgenomics.com/supp/cell-exp/refdata-cellranger-GRCh38-3.0.0.tar.gz
-  tar -xzf refdata-cellranger-GRCh38-3.0.0.tar.gz   # REF = the extracted refdata-cellranger-GRCh38-3.0.0/
+  tar -xzf refdata-cellranger-GRCh38-3.0.0.tar.gz # REF = the extracted refdata-cellranger-GRCh38-3.0.0/
   ```
 - ~4.8 TB free under `DATA_DIR` (the FASTQ plus their renamed copies).
 - Outbound internet from the compute nodes (steps 1 and 3).
@@ -33,8 +33,8 @@ From the cluster's login node:
 cd 00_raw_data_processing
 export DATA_DIR=<data root>
 export REF=<path to refdata-cellranger-GRCh38-3.0.0>
-bash rawprocessing_all.sh --dry-run   # what is already done, what would be submitted
-bash rawprocessing_all.sh             # submit the missing steps as one afterok chain
+bash rawprocessing_all.sh --dry-run # what is already done, what would be submitted
+bash rawprocessing_all.sh # submit the missing steps as one afterok chain
 ```
 
 `rawprocessing_all.sh` submits the jobs below, each starting only if the previous one succeeded,
@@ -73,9 +73,8 @@ are versioned in the repo, next to the script that writes them.
 
 **Freeing space.** Once `all_samples_combined.h5ad` exists, `fastq_raw/` and `renamed_fastq/`
 (~4.8 TB together, plus any `.sra` file `prefetch` left in `fastq_raw/`) are no longer read by
-anything and can be deleted. Keep `cellranger_out/`: phase 06_1 reads `raw_feature_bc_matrix.h5`
-from it. If space is not a problem, keep everything until the analyses are finished: rebuilding
-the FASTQ means downloading 2.4 TB again. `rawprocessing_all.sh` treats the phase as complete
+anything and can be deleted. If space is not a problem, keep everything until the analyses are
+finished: rebuilding the FASTQ means downloading 2.4 TB again. `rawprocessing_all.sh` treats the phase as complete
 while the `.h5ad` exists, so deleting the FASTQ does not trigger a new download.
 
 ## Key parameters
@@ -109,8 +108,8 @@ downloads only what is missing and re-runs the steps after it.
 
 ```bash
 rm -f "$DATA_DIR"/fastq_raw/SRR26540980_[12].fastq.gz
-rm -rf "$DATA_DIR"/cellranger_out/P07_A_P          # only if the run already went through Cell Ranger
-rm -f "$DATA_DIR"/all_samples_combined.h5ad        # only if it was already built
+rm -rf "$DATA_DIR"/cellranger_out/P07_A_P # only if the run already went through Cell Ranger
+rm -f "$DATA_DIR"/all_samples_combined.h5ad # only if it was already built
 bash rawprocessing_all.sh
 ```
 

@@ -4,12 +4,11 @@ Where every heavy object of the thesis lives. The scripts never hardcode this pa
 `DATA_DIR` from the environment and exit with an explanatory message if it is unset.
 
 ```bash
-export DATA_DIR=<data root>
+export DATA_DIR=<data root> # (e.g. `/home/catt/QCB-thesis-final/datasets`)
 ```
 
 The clone itself can sit anywhere: no script contains the repo's path (they self-locate via
 `SCRIPT_DIR` / `SLURM_SUBMIT_DIR`), so `DATA_DIR` is the only thing to set after `git clone`.
-On the cluster the root is `/users/genomics/albertoc/Tesi/hopes_and_dreams/datasets`
 
 The Cell Ranger reference (`REF`, ~11 GB, `submit_cellranger.slurm`) stays outside `DATA_DIR`:
 it is a shared external input, not something a phase of this pipeline writes. The exact build used
@@ -23,7 +22,7 @@ untarred: `REF` points at the resulting directory.
 - this README,
 - `Cells_Adult_Breast.pkl` (the CellTypist model),
 - `regev_lab_cell_cycle_genes.txt` (the Tirosh/Regev signature),
-- `signatures/` (the curated gene lists read by 04_3, see below). 
+- `signatures/` (the curated gene lists scored in phase 03).
 Everything else is rebuilt by re-running the phase that writes it.
 
 ## What each phase writes here
@@ -35,7 +34,7 @@ Everything else is rebuilt by re-running the phase that writes it.
 | `fastq_raw/` | 00_3, the FASTQ as downloaded (~2.4 TB) |
 | `renamed_fastq/` | 00_4, Cell Ranger naming + `unique_samples.txt` |
 | `cellranger_out/<sample>/outs/filtered_feature_bc_matrix.h5` | 00_5, what 00_6 concatenates |
-| `cellranger_out/<sample>/outs/raw_feature_bc_matrix.h5` | 00_5, the unfiltered matrix, unused until **06_1**, which reads the empty droplets out of it |
+| `cellranger_out/<sample>/outs/raw_feature_bc_matrix.h5` | 00_5, the unfiltered matrix |
 | `all_samples_combined.h5ad` | 00_6, the concatenated raw object |
 
 ### 01_pre_processing
@@ -73,17 +72,26 @@ exactly what the metrics read. See "Trained models" in the phase-02 README.
 The R methods also write a `02_integration/<run_id>.rds` intermediate, deleted once converted
 (`--keep-rds` to keep it): nothing downstream reads it and it is the largest artefact of the phase.
 
-### 03_drvi_tumoral_epi (DA CAMBIARE)
+### 03_drvi_tumoral_epi
 
-`05_tum/` holds everything phase 05 writes. The first block is 05_1 (inferCNV); the rest is the
-04 procedure redone on the malignant subset, and lands here as 05_2 onwards fills it in.
+`03_tum/` holds everything phase 03 writes. The DRVI run is `drvi_tum_64_nomt`.
 
 | Path | Step |
 |---|---|
-| `05_tum/gene_order_hg38_gencode_v27.txt` | 05_1, downloaded once from the inferCNV authors |
-| `05_tum/cohort_census.csv` | 05_1, what went into each per-patient run |
-| `05_tum/input/<cohort>/` | 05_1, `counts.mtx` + `genes.tsv` + `barcodes.tsv` + `annotations.tsv` |
-| `05_tum/work/<cohort>/` | 05_1, inferCNV's working directory - **deleted on success**, 1-3 GB while it exists |
-| `05_tum/summary/<cohort>_cnv.csv` | 05_1, one row per cell: group, `cnv_score`, `cnv_corr`, `chr1`..`chr22` |
-| **`05_tum/cnv_status.csv`** | 05_1, the call - one row per cell of `shiao.h5ad` |
-| **`05_tum/cell_annotation_cnv.csv`** | 05_1, `cell_type_cnv` after the CellTypist re-run - the table 05_2 joins |
+| `03_tum/gene_order_hg38_gencode_v27.txt` | 03_1, downloaded once from the inferCNV authors |
+| `03_tum/cohort_census.csv` | 03_1, the cells that went into each per-patient run |
+| `03_tum/input/<cohort>/` | 03_1, `counts.mtx` + `genes.tsv` + `barcodes.tsv` + `annotations.tsv` |
+| `03_tum/work/<cohort>/` | 03_1, inferCNV's working directory - **deleted on success**, 1-3 GB while it exists |
+| `03_tum/summary/<cohort>_cnv.csv` | 03_1, one row per cell: group, subcluster, `cnv_score`, `cnv_corr`, `chr1`..`chr22` |
+| `03_tum/sensitivity/` | 03_1, the resolution and reference sensitivity runs |
+| **`03_tum/cnv_status.csv`** | 03_1, the call - one row per cell of `shiao.h5ad` |
+| **`03_tum/cell_annotation.csv`** | 03_1, the CellTypist re-run - the table 03_2 joins |
+| `03_tum/shiao_tum_raw.h5ad`, `_norm`, `_norm_cc`, `_reduced` | 03_2, subset, scran, cell cycle, HVG / PCA / UMAP |
+| `03_tum/shiao_tum_hvg_2k.h5ad` (+ `_list.csv`) | 03_2, the full HVG panel |
+| `03_tum/shiao_tum_hvg_2k_nomt.h5ad` (+ `_list.csv`) | 03_2, the same panel without the `MT-` genes: the DRVI input |
+| **`03_tum/shiao_tum.h5ad`** | 03_2, + leiden - the definitive object of the phase |
+| `03_tum/model_drvi_tum_64_nomt.pt`, `embed_drvi_tum_64_nomt.h5ad` | 03_3, the trained model and the latent space |
+| `03_tum/shiao_tum_drvi_tum_64_nomt.h5ad` | 03_3, the definitive object with the latent space in `obsm['X_drvi']` |
+| `03_tum/cytotrace2_drvi_tum_64_nomt.csv` | 03_5, per-cell CytoTRACE2 scores |
+| `03_tum/signature_scores_<collection>_drvi_tum_64_nomt.csv` | 03_6, per-cell signature scores |
+| `03_tum/random_signature_scores_*`, `drvi_state_partitions_drvi_tum_64_nomt.csv.gz` | 03_8, cached null draws and state partitions |
