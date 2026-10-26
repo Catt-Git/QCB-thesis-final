@@ -59,8 +59,9 @@ N_LATENT = 64 # DRVI latent dimensions
 # Leiden on the DRVI latent space, computed in 03_3; `drvi_leiden` is the resolution 03_4 - 03_9 read.
 LEIDEN_KEY = "drvi_leiden"
 LEIDEN_RESOLUTIONS = (0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0)
-LEIDEN_RESOLUTION = 0.5
+LEIDEN_RESOLUTION = 1.5 # the resolution 03_4 - 03_9 read, as drvi_leiden
 LEIDEN_K = 15 # neighbours, as the UMAP graph of 03_3
+LEIDEN_MIN_CELLS = 100 # smaller clusters are merged into their neighbours (isolated ones are kept)
 
 
 def status_csv() -> Path:

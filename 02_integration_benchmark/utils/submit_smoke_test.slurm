@@ -10,8 +10,8 @@
 
 # Usage:
 #   cd 02_integration_benchmark/utils   # submit FROM this folder
-#   sbatch submit_smoke_test.slurm
-#   sbatch --export=ALL,DATA_DIR=<data root> submit_smoke_test.slurm   # another data root
+#   export DATA_DIR=<data root>
+#   sbatch --export=ALL,DATA_DIR=$DATA_DIR submit_smoke_test.slurm
 
 set -euo pipefail
 
@@ -27,8 +27,8 @@ eval "$(/soft/system/software/Miniconda3/202411/bin/conda shell.bash hook)"
 conda activate benchmark-py-r
 set -u
 
-# Data root of the thesis run, overridable with 'sbatch --export=ALL,DATA_DIR=...'.
-export DATA_DIR="${DATA_DIR:-/users/genomics/albertoc/Tesi/hopes_and_dreams/datasets}"
+# DATA_DIR is required.
+: "${DATA_DIR:?set DATA_DIR (sbatch --export=ALL,DATA_DIR=... or export it first)}"
 export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-8}"
 
 # Copy the fixture first (scp smoke_test/smoke_fixture.h5ad <cluster>:<repo>/02_integration_benchmark/utils/smoke_test/);

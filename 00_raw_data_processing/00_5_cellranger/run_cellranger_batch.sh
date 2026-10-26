@@ -19,9 +19,9 @@
 set -uo pipefail
 
 # Data root, input FASTQ folder, reference transcriptome, output directory, and number of samples to process concurrently (5 x 16 cores = 80 on a 90-core node).
-# DATA_DIR and REF are deliberately REQUIRED rather than defaulted: the ~2.4TB of FASTQ live outside the repo and their location is site-specific. Set them in submit_cellranger.slurm (the HPC entry point) or export them before running. The values used for the thesis are recorded in the README.
-: "${DATA_DIR:?not set. Export DATA_DIR=<data root> and REF=<path to refdata-cellranger-GRCh38-3.0.0>, or edit submit_cellranger.slurm. See README.}"
-: "${REF:?not set. Export REF=<path to refdata-cellranger-GRCh38-3.0.0>, or edit submit_cellranger.slurm. See README.}"
+# DATA_DIR and REF are deliberately REQUIRED rather than defaulted: the ~2.4TB of FASTQ live outside the repo and their location is site-specific. Export them before running (or pass them to submit_cellranger.slurm with sbatch --export).
+: "${DATA_DIR:?not set. Export DATA_DIR=<data root> and REF=<path to refdata-cellranger-GRCh38-3.0.0>. See README.}"
+: "${REF:?not set. Export REF=<path to refdata-cellranger-GRCh38-3.0.0>. See README.}"
 FASTQ_DIR="${FASTQ_DIR:-$DATA_DIR/renamed_fastq}"
 OUTDIR="${OUTDIR:-$DATA_DIR/cellranger_out}"
 PARALLEL_JOBS="${PARALLEL_JOBS:-5}"

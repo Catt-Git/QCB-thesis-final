@@ -36,14 +36,15 @@
 #
 # Usage:
 #   export DATA_DIR=<data root>
+#   export REF=<path to refdata-cellranger-GRCh38-3.0.0>
 #   bash rawprocessing_all.sh                    # submit what is missing, chained
 #   bash rawprocessing_all.sh --dry-run          # print the plan and the sbatch commands, submit nothing
 #   bash rawprocessing_all.sh --force            # submit every step
 #   bash rawprocessing_all.sh download verify    # only the named step(s), chained in phase order
 #
 # Step names: metadata, samplemap, download, verify, rename, cellranger, h5ad.
-# REF and DOWNLOAD_ENV reach the jobs when exported (sbatch --export=ALL); otherwise
-# the .slurm defaults apply. Each job logs next to its own .slurm, as when submitted by
+# DATA_DIR, REF and DOWNLOAD_ENV reach the jobs when exported (sbatch --export=ALL);
+# DOWNLOAD_ENV falls back to its .slurm default. Each job logs next to its own .slurm, as when submitted by
 # hand; the plan and the job ids also go to 00_raw_data_processing/logs/rawprocessing_all_<timestamp>.log.
 
 set -euo pipefail
@@ -86,7 +87,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --force|-f) FORCE=1; shift ;;
     --dry-run|-n) DRY_RUN=1; shift ;;
-    -h|--help) sed -n '2,47p' "${BASH_SOURCE[0]}"; exit 0 ;;
+    -h|--help) sed -n '2,48p' "${BASH_SOURCE[0]}"; exit 0 ;;
     -*) echo "unknown option: $1" >&2; exit 1 ;;
     *) STEP_FILTER+=("$1"); shift ;;
   esac
@@ -250,6 +251,11 @@ for i in "${!STEP_NAMES[@]}"; do
     prev_run=0
   fi
 done
+# REF has no default: fail now rather than when the chain reaches Cell Ranger.
+if [ "${PLAN[5]}" = run ] && [ -z "${REF:-}" ]; then
+  echo "[error] cellranger: export REF=<path to refdata-cellranger-GRCh38-3.0.0>" >&2
+  missing_input=1
+fi
 if [ "$missing_input" -eq 1 ]; then
   [ "$DRY_RUN" -eq 0 ] && exit 1
   echo "[warn] --dry-run: continuing anyway, the plan below would fail as it stands"

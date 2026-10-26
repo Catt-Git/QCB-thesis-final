@@ -85,6 +85,7 @@ bash 02_3_plot_method_umap/plot_all.sh
 
 # 4. metrics, on the cluster
 export CLUSTER_HOST=<user>@<hostname>
+export CLUSTER_DATA_DIR=<data root on the cluster>
 bash utils/sync_to_cluster.sh # upload the integrated objects and their references
 #   then, on the cluster:
 #   bash 02_4_metrics/run_all_metrics.sh --slurm

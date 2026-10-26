@@ -13,8 +13,9 @@
 #
 # Usage:
 #   cd 00_raw_data_processing/00_6_build_h5ad   # submit FROM this folder, after Cell Ranger
-#   sbatch submit_h5ad_concat.slurm
-#   sbatch --dependency=afterok:<cellranger_jobid> submit_h5ad_concat.slurm   # chain it to step 5
+#   export DATA_DIR=<data root>
+#   sbatch --export=ALL,DATA_DIR=$DATA_DIR submit_h5ad_concat.slurm
+#   sbatch --export=ALL,DATA_DIR=$DATA_DIR --dependency=afterok:<cellranger_jobid> submit_h5ad_concat.slurm   # chain it to step 5
 
 # Log the node, timestamp, and job identifiers into the .out file for traceability.
 hostname; date
@@ -28,8 +29,8 @@ conda activate benchmark-py-r
 # Sanity check: confirm python3 comes from the benchmark-py-r env.
 which python3
 
-# Site-specific data root, set here at the entry point rather than defaulted inside the script. This is the value used for the thesis run; to replicate elsewhere change this line, or pass it at submission with 'sbatch --export=ALL,DATA_DIR=...' (the ${VAR:-default} form lets the submitted value win).
-export DATA_DIR="${DATA_DIR:-/users/genomics/albertoc/Tesi/hopes_and_dreams/datasets}"
+# Site-specific data root, required: pass it with 'sbatch --export=ALL,DATA_DIR=...'.
+: "${DATA_DIR:?set DATA_DIR (sbatch --export=ALL,DATA_DIR=... or export it first)}"
 
 # Submit with 'sbatch submit_h5ad_concat.slurm' FROM the 00_6_build_h5ad folder: SLURM copies this file to a spool directory, so "$0" cannot be used to locate build_combined_h5ad.py; SLURM_SUBMIT_DIR (the directory sbatch was called from) is the reliable anchor.
 cd "$SLURM_SUBMIT_DIR"

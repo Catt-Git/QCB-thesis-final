@@ -9,8 +9,8 @@
 
 # Usage:
 #   cd 01_pre_processing/01_3_normalization   # submit FROM this folder
-#   sbatch submit_scran_norm.slurm
-#   sbatch --export=ALL,DATA_DIR=<data root> submit_scran_norm.slurm   # another data root
+#   export DATA_DIR=<data root>
+#   sbatch --export=ALL,DATA_DIR=$DATA_DIR submit_scran_norm.slurm
 
 set -euo pipefail
 
@@ -26,9 +26,9 @@ eval "$(/soft/system/software/Miniconda3/202411/bin/conda shell.bash hook)"
 conda activate benchmark-py-r
 set -u
 
-# Data root of the thesis run, overridable with 'sbatch --export=ALL,DATA_DIR=...'.
+# DATA_DIR is required.
 # FIG_DIR is not set, so figures go to the repo's 01_pre_processing/figures/01_3_normalization.
-export DATA_DIR="${DATA_DIR:-/users/genomics/albertoc/Tesi/hopes_and_dreams/datasets}"
+: "${DATA_DIR:?set DATA_DIR (sbatch --export=ALL,DATA_DIR=... or export it first)}"
 # Threads limited to the cores granted by SLURM.
 export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-8}"
 

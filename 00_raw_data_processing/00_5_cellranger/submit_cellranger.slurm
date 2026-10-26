@@ -12,8 +12,10 @@
 #
 # Usage:
 #   cd 00_raw_data_processing/00_5_cellranger   # submit FROM this folder, after the renaming
-#   sbatch submit_cellranger.slurm
-#   sbatch --dependency=afterok:<rename_jobid> submit_cellranger.slurm   # chain it to step 4
+#   export DATA_DIR=<data root>
+#   export REF=<path to refdata-cellranger-GRCh38-3.0.0>
+#   sbatch --export=ALL,DATA_DIR=$DATA_DIR,REF=$REF submit_cellranger.slurm
+#   sbatch --export=ALL,DATA_DIR=$DATA_DIR,REF=$REF --dependency=afterok:<rename_jobid> submit_cellranger.slurm   # chain it to step 4
 
 # Log the node, timestamp, and job identifiers into the .out file for traceability.
 hostname; date
@@ -24,9 +26,9 @@ module load Miniconda3/202411
 eval "$(/soft/system/software/Miniconda3/202411/bin/conda shell.bash hook)"
 module load cellranger/4.0.0
 
-# Site-specific paths, set here at the entry point rather than defaulted inside run_cellranger_batch.sh: DATA_DIR is the data root (expects renamed_fastq/ inside it, writes cellranger_out/ there), REF is the reference transcriptome. These are the values used for the thesis run; to replicate elsewhere change these two lines, or pass them at submission with 'sbatch --export=ALL,DATA_DIR=...,REF=...' (the ${VAR:-default} form lets the submitted value win).
-export DATA_DIR="${DATA_DIR:-/users/genomics/albertoc/Tesi/hopes_and_dreams/datasets}"
-export REF="${REF:-/users/genomics/albertoc/Tesi/cell_ranger/refdata-cellranger-GRCh38-3.0.0}"
+# Site-specific paths, required: DATA_DIR is the data root (expects renamed_fastq/ inside it, writes cellranger_out/ there), REF is the reference transcriptome. Pass them with 'sbatch --export=ALL,DATA_DIR=...,REF=...'.
+: "${DATA_DIR:?set DATA_DIR (sbatch --export=ALL,DATA_DIR=...,REF=...)}"
+: "${REF:?set REF to refdata-cellranger-GRCh38-3.0.0 (sbatch --export=ALL,DATA_DIR=...,REF=...)}"
 
 # Run the parallel Cell Ranger batch within this allocation. Submit with 'sbatch submit_cellranger.slurm' FROM the 00_5_cellranger folder: SLURM copies this file to a spool directory, so "$0" does not point at the repo and cannot be used to locate run_cellranger_batch.sh; SLURM_SUBMIT_DIR (the directory sbatch was called from) is the reliable anchor.
 cd "$SLURM_SUBMIT_DIR"

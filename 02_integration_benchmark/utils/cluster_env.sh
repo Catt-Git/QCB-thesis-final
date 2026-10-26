@@ -7,9 +7,9 @@
 #   . "$SCRIPT_DIR/../utils/cluster_env.sh"
 #
 #   CLUSTER_HOST      user@hostname; only sync_to_cluster.sh needs it
-#   CLUSTER_DATA_DIR  the data root on the cluster
+#   CLUSTER_DATA_DIR  the data root on the cluster; required by sync_to_cluster.sh
 
-CLUSTER_DATA_DIR="${CLUSTER_DATA_DIR:-/users/genomics/albertoc/Tesi/hopes_and_dreams/datasets}"
+CLUSTER_DATA_DIR="${CLUSTER_DATA_DIR:-}"
 
 # DATA_DIR is required; warns if it differs from an existing cluster root.
 resolve_data_dir() {
@@ -17,7 +17,7 @@ resolve_data_dir() {
     echo "set DATA_DIR to the directory holding the datasets" >&2
     return 1
   fi
-  if [ "${DATA_DIR%/}" != "${CLUSTER_DATA_DIR%/}" ] && [ -d "$CLUSTER_DATA_DIR" ]; then
+  if [ -n "$CLUSTER_DATA_DIR" ] && [ "${DATA_DIR%/}" != "${CLUSTER_DATA_DIR%/}" ] && [ -d "$CLUSTER_DATA_DIR" ]; then
     echo "[warn] DATA_DIR=$DATA_DIR, but the cluster data root is" >&2
     echo "[warn]   $CLUSTER_DATA_DIR" >&2
     echo "[warn] and it exists on this machine. sync_to_cluster.sh fills the latter," >&2

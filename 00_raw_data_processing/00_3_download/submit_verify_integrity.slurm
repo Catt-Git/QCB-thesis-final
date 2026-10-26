@@ -14,8 +14,9 @@
 #
 # Usage:
 #   cd 00_raw_data_processing/00_3_download   # submit FROM this folder
-#   sbatch submit_verify_integrity.slurm
-#   sbatch --dependency=afterok:<download_array_jobid> submit_verify_integrity.slurm   # chain it to the download array: starts when every task is done
+#   export DATA_DIR=<data root>
+#   sbatch --export=ALL,DATA_DIR=$DATA_DIR submit_verify_integrity.slurm
+#   sbatch --export=ALL,DATA_DIR=$DATA_DIR --dependency=afterok:<download_array_jobid> submit_verify_integrity.slurm   # chain it to the download array: starts when every task is done
 
 # Exit on undefined variables and pipe failures; -e is intentionally omitted here as in verify_integrity.sh itself, so a single corrupted file does not abort the audit before the remaining files are checked.
 set -uo pipefail
@@ -24,8 +25,8 @@ set -uo pipefail
 hostname; date
 echo "Job name: $SLURM_JOB_NAME"; echo "Job ID: $SLURM_JOB_ID"
 
-# Data root: the value used for the thesis run, kept overridable with 'sbatch --export=ALL,DATA_DIR=...' 
-export DATA_DIR="${DATA_DIR:-/users/genomics/albertoc/Tesi/hopes_and_dreams/datasets}"
+# Data root, required: pass it with 'sbatch --export=ALL,DATA_DIR=...'.
+: "${DATA_DIR:?set DATA_DIR (sbatch --export=ALL,DATA_DIR=... or export it first)}"
 
 # Submit with 'sbatch submit_verify_integrity.slurm' FROM the 00_3_download folder: SLURM copies this file to a spool directory, so "$0" cannot be used to locate verify_integrity.sh; SLURM_SUBMIT_DIR (the directory sbatch was called from) is the reliable anchor.
 cd "$SLURM_SUBMIT_DIR"

@@ -21,9 +21,8 @@ storage and never leave it.
 - ~4.8 TB free under `DATA_DIR` (the FASTQ plus their renamed copies).
 - Outbound internet from the compute nodes (steps 1 and 3).
 
-The `.slurm` files are written for the thesis cluster: their `module load` lines and their
-default `DATA_DIR` and `REF` paths are site-specific. On another cluster, adapt the `module load`
-lines and export your own paths before launching.
+The `.slurm` files are written for the thesis cluster: their `module load` lines are
+site-specific. `DATA_DIR` and `REF` have no default and must be exported before launching.
 
 ## Quick start
 

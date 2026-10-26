@@ -9,7 +9,8 @@
 #
 # Usage:
 #   export DATA_DIR=<data root>
-#   export CLUSTER_HOST=albertoc@hpc.example.it                # user@host, required
+#   export CLUSTER_HOST=<user>@<hostname>                      # required
+#   export CLUSTER_DATA_DIR=<data root on the cluster>         # required
 #   bash sync_to_cluster.sh --dry-run                          # list what would be sent
 #   bash sync_to_cluster.sh                                    # the whole grid
 #   bash sync_to_cluster.sh --scaling unscaled                 # the unscaled half
@@ -31,6 +32,7 @@ GRID="$UTILS_DIR/../benchmark_grid.tsv"
 
 # Remote root shared with the cluster-side wrappers.
 . "$UTILS_DIR/cluster_env.sh"
+: "${CLUSTER_DATA_DIR:?set CLUSTER_DATA_DIR to the data root on the cluster}"
 REMOTE="$CLUSTER_DATA_DIR"
 
 # Not in the grid (only the R methods read them), but part of `inputs`.

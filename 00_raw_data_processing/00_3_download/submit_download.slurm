@@ -10,13 +10,14 @@
 
 # submit_download.slurm
 # SLURM wrapper for the FASTQ download (~2.4 TB), which runs on the cluster and not locally.
-# One array task = one line of sample_map_gex_final.tsv = one SRR, so the 149 runs are downloaded as 149 independent jobs instead of one multi-day serial loop: a run that fails (bad transfer, wall clock) takes down only its own task, and the failed indices can be resubmitted on their own with 'sbatch --array=<idx>[,<idx>...] submit_download.slurm'.
+# One array task = one line of sample_map_gex_final.tsv = one SRR, so the 149 runs are downloaded as 149 independent jobs instead of one multi-day serial loop: a run that fails (bad transfer, wall clock) takes down only its own task, and the failed indices can be resubmitted on their own with 'sbatch --export=ALL,DATA_DIR=$DATA_DIR --array=<idx>[,<idx>...] submit_download.slurm'.
 # The '%4' throttle keeps at most 4 tasks downloading at once.
 
 # Usage:
 #   cd 00_raw_data_processing/00_3_download      # submit FROM this folder
-#   sbatch submit_download.slurm                 # all 149 runs, 4 at a time
-#   sbatch --array=44,77 submit_download.slurm   # only those lines of the sample map (re-run of failed/corrupted runs)
+#   export DATA_DIR=<data root>
+#   sbatch --export=ALL,DATA_DIR=$DATA_DIR submit_download.slurm                 # all 149 runs, 4 at a time
+#   sbatch --export=ALL,DATA_DIR=$DATA_DIR --array=44,77 submit_download.slurm   # only those lines of the sample map (re-run of failed/corrupted runs)
 #
 # The line of a given SRR, i.e. its array index:
 #   grep -n SRR26540980 ../00_2_sample_mapping/sample_map_gex_final.tsv | cut -d: -f1
@@ -29,9 +30,9 @@ set -euo pipefail
 hostname; date
 echo "Job name: $SLURM_JOB_NAME"; echo "Array job: $SLURM_ARRAY_JOB_ID  Task: $SLURM_ARRAY_TASK_ID"
 
-# Data root (must hold ~2.4TB): the value used for the thesis run, set here at the entry point and overridable with 'sbatch --export=ALL,DATA_DIR=...'. download_fastq.sh itself keeps requiring DATA_DIR with no default
+# Data root (must hold ~2.4TB), required: pass it with 'sbatch --export=ALL,DATA_DIR=...'.
 # DOWNLOAD_ENV is the conda environment providing the SRA Toolkit (prefetch/fasterq-dump): on the cluster that is benchmark-py-r, built from environments/benchmark-py-r.yml, which declares sra-tools.
-export DATA_DIR="${DATA_DIR:-/users/genomics/albertoc/Tesi/hopes_and_dreams/datasets}"
+: "${DATA_DIR:?set DATA_DIR (sbatch --export=ALL,DATA_DIR=... or export it first)}"
 DOWNLOAD_ENV="${DOWNLOAD_ENV:-benchmark-py-r}"
 
 # Load Miniconda and activate the environment holding the SRA Toolkit.
