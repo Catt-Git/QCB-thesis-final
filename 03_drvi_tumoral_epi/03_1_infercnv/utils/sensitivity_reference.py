@@ -3,7 +3,7 @@
 03_1 sensitivity_reference: does the call depend on the reference population?
 
 Four reference configurations on the same observations and genes, for Patient16
-(tumour-rich) and Patient52 (no detectable tumour):
+(tumor-rich) and Patient52 (no detectable tumor):
   A_current   ref_tcell + ref_myeloid   the operating design
   B_TandB     ref_tcell + ref_bcell
   C_fine      up to 6 immune subtypes   finest split

@@ -236,7 +236,7 @@ def main() -> int:
     model = models.Model.load(model=str(model_path))
 
     # No phase-01 PCA/graph/UMAP is carried over, so the over-clustering is rebuilt without the
-    # tumour cells. 01_5's HVG column would replace CellTypist's own gene choice (see top).
+    # tumor cells. 01_5's HVG column would replace CellTypist's own gene choice (see top).
     rows = np.flatnonzero(reannotate)
     var = var.drop(columns=["highly_variable"], errors="ignore")
     majority_voting = not args.no_majority_voting

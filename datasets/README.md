@@ -86,12 +86,11 @@ The R methods also write a `02_integration/<run_id>.rds` intermediate, deleted o
 | `03_tum/sensitivity/` | 03_1, the resolution and reference sensitivity runs |
 | **`03_tum/cnv_status.csv`** | 03_1, the call - one row per cell of `shiao.h5ad` |
 | **`03_tum/cell_annotation.csv`** | 03_1, the CellTypist re-run - the table 03_2 joins |
-| `03_tum/shiao_tum_raw.h5ad`, `_norm`, `_norm_cc`, `_reduced` | 03_2, subset, scran, cell cycle, HVG / PCA / UMAP |
-| `03_tum/shiao_tum_hvg_2k.h5ad` (+ `_list.csv`) | 03_2, the full HVG panel |
-| `03_tum/shiao_tum_hvg_2k_nomt.h5ad` (+ `_list.csv`) | 03_2, the same panel without the `MT-` genes: the DRVI input |
-| **`03_tum/shiao_tum.h5ad`** | 03_2, + leiden - the definitive object of the phase |
+| `03_tum/shiao_tum_raw.h5ad`, `_norm`, `_norm_cc` | 03_2, subset, scran, cell cycle |
+| **`03_tum/shiao_tum.h5ad`** | 03_2, + HVGs without `MT-` / PCA / UMAP - the definitive object of the phase |
+| `03_tum/shiao_tum_hvg_2k_nomt.h5ad` (+ `_list.csv`) | 03_2, the HVG panel alone: the DRVI input |
 | `03_tum/model_drvi_tum_64_nomt.pt`, `embed_drvi_tum_64_nomt.h5ad` | 03_3, the trained model and the latent space |
 | `03_tum/shiao_tum_drvi_tum_64_nomt.h5ad` | 03_3, the definitive object with the latent space in `obsm['X_drvi']` |
 | `03_tum/cytotrace2_drvi_tum_64_nomt.csv` | 03_5, per-cell CytoTRACE2 scores |
 | `03_tum/signature_scores_<collection>_drvi_tum_64_nomt.csv` | 03_6, per-cell signature scores |
-| `03_tum/random_signature_scores_*`, `drvi_state_partitions_drvi_tum_64_nomt.csv.gz` | 03_8, cached null draws and state partitions |
+| `03_tum/random_signature_scores_*`, `drvi_state_argmax*_drvi_tum_64_nomt.csv.gz` | 03_8, cached null draws and max(DR) assignments |

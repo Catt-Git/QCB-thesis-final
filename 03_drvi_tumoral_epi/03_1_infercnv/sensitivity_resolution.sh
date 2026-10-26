@@ -3,8 +3,8 @@
 # 03_1 sensitivity_resolution: does the per-patient verdict depend on the subcluster resolution?
 #
 # Runs run_infercnv.R at leiden 0.005 / 0.01 / 0.02 / 0.05 on four cohorts: Patient16
-# (tumour-rich), Patient43 (intermediate), Patient64 (small stromal null), Patient52 (no
-# detectable tumour). The existing summaries are restored after each run.
+# (tumor-rich), Patient43 (intermediate), Patient64 (small stromal null), Patient52 (no
+# detectable tumor). The existing summaries are restored after each run.
 #
 # Output: $DATA_DIR/03_tum/sensitivity/resolution/<cohort>_res<r>.csv (+ .log)
 #
@@ -12,16 +12,34 @@
 #   export DATA_DIR=<data root>
 #   bash sensitivity_resolution.sh                # 16 runs, ~75 min, resumes
 #   bash sensitivity_resolution.sh --threads 8
+#   bash sensitivity_resolution.sh --slurm        # same, as one job on the cluster
 #   python3 sensitivity_resolution.py             # then the tables
 
 set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-: "${DATA_DIR:?set DATA_DIR}"
 
 THREADS="${THREADS:-20}"
 COHORTS=(Patient64 Patient43 Patient16 Patient52)
 RESOLUTIONS=(0.005 0.01 0.02 0.05)
-[ "${1:-}" = "--threads" ] && THREADS="$2"
+
+ARGS=("$@")
+USE_SLURM=0
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --threads) THREADS="${2:?--threads needs a value}"; shift 2 ;;
+    --slurm) USE_SLURM=1; shift ;;
+    -h|--help) sed -n '2,/^$/p' "${BASH_SOURCE[0]}"; exit 0 ;;
+    *) echo "unknown option: $1" >&2; exit 1 ;;
+  esac
+done
+: "${DATA_DIR:?set DATA_DIR}"
+
+if [ "$USE_SLURM" -eq 1 ]; then
+  . "$(dirname "$SCRIPT_DIR")/utils/slurm.sh"
+  submit_driver sensitivity_resolution "$THREADS" 64G "$SCRIPT_DIR/logs" 0 \
+    "$SCRIPT_DIR/sensitivity_resolution.sh" ${ARGS[@]+"${ARGS[@]}"}
+  exit 0
+fi
 
 OUT="$DATA_DIR/03_tum/sensitivity/resolution"
 SUMMARY="$DATA_DIR/03_tum/summary"

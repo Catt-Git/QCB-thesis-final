@@ -23,7 +23,6 @@ dependencies:
   - bbknn             
   - rpy2                
   - sra-tools
-  # CUDA build: the RTX 5070 Ti (Blackwell, sm_120) needs CUDA >= 12.8
   - pytorch=2.13.0=cuda129*
   - cuda-version=12.9
   - torchvision

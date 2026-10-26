@@ -8,11 +8,13 @@
 # Cohorts run one at a time: inferCNV already uses --threads and holds the whole cohort in
 # memory. Cohorts with a summary are skipped, so a re-run resumes; a failed cohort is
 # reported at the end without stopping the others. The malignant call is made afterwards,
-# in call_malignant.ipynb.
+# in call_malignant.ipynb. --slurm submits the whole driver as one job (utils/slurm.sh),
+# with one CPU per inferCNV thread.
 #
 # Usage:
 #   export DATA_DIR=<data root>
 #   bash infercnv_all.sh                              # prepare + every cohort, resuming
+#   bash infercnv_all.sh --slurm --threads 16         # same, as one job on the cluster
 #   bash infercnv_all.sh --force                      # re-run everything, overwriting
 #   bash infercnv_all.sh --dry-run                    # print what would run, do nothing
 #   bash infercnv_all.sh --threads 16                 # threads for infercnv::run() [default: 8]
@@ -22,7 +24,8 @@
 #   bash infercnv_all.sh infercnv                     # only stage 2
 #
 # Environments can be overridden with PREP_ENV / INFERCNV_ENV.
-# Logs go to logs/infercnv_all_<timestamp>.log as well as to the terminal.
+# Logs go to logs/infercnv_all_<timestamp>.log as well as to the terminal (and to
+# logs/infercnv_all_<jobid>.out with --slurm).
 
 set -euo pipefail
 
@@ -37,7 +40,8 @@ THREADS="${THREADS:-8}"
 # sit in subclusters large enough to take a median over.
 RESOLUTION="${RESOLUTION:-0.005}"
 
-FORCE=0; DRY_RUN=0; HMM=0
+ARGS=("$@")
+FORCE=0; DRY_RUN=0; HMM=0; USE_SLURM=0
 COHORTS=()
 STAGE_FILTER=()
 while [ $# -gt 0 ]; do
@@ -45,10 +49,11 @@ while [ $# -gt 0 ]; do
     --force|-f) FORCE=1; shift ;;
     --dry-run|-n) DRY_RUN=1; shift ;;
     --hmm) HMM=1; shift ;;
+    --slurm) USE_SLURM=1; shift ;;
     --threads) THREADS="$2"; shift 2 ;;
     --leiden-resolution) RESOLUTION="$2"; shift 2 ;;
     --cohorts) shift; while [ $# -gt 0 ] && [[ "$1" != -* ]]; do COHORTS+=("$1"); shift; done ;;
-    -h|--help) sed -n '3,25p' "${BASH_SOURCE[0]}"; exit 0 ;;
+    -h|--help) sed -n '2,/^$/p' "${BASH_SOURCE[0]}"; exit 0 ;;
     -*) echo "unknown option: $1" >&2; exit 1 ;;
     prepare|infercnv) STAGE_FILTER+=("$1"); shift ;;
     *) echo "unknown stage '$1'; valid stages: prepare infercnv" >&2; exit 1 ;;
@@ -58,6 +63,13 @@ done
 : "${DATA_DIR:?set DATA_DIR to the directory holding the datasets (outside the repo)}"
 CNV_DIR="$DATA_DIR/03_tum"
 export FIG_DIR="${FIG_DIR:-$PHASE_DIR/figures/03_1_infercnv}"
+
+if [ "$USE_SLURM" -eq 1 ]; then
+  . "$PHASE_DIR/utils/slurm.sh"
+  submit_driver infercnv_all "$THREADS" 64G "$LOG_DIR" "$DRY_RUN" "$SCRIPT_DIR/infercnv_all.sh" \
+    ${ARGS[@]+"${ARGS[@]}"}
+  exit 0
+fi
 
 run_stage() { [ ${#STAGE_FILTER[@]} -eq 0 ] || printf '%s\n' "${STAGE_FILTER[@]}" | grep -qx "$1"; }
 

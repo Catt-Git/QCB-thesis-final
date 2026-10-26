@@ -1,7 +1,7 @@
 # 03_1_infercnv
 
 First step of phase 03: decide which epithelial cells are malignant. The CellTypist model of 01_4
-(`Cells_Adult_Breast.pkl`) is trained on normal breast and has no malignant class, so tumour cells
+(`Cells_Adult_Breast.pkl`) is trained on normal breast and has no malignant class, so tumor cells
 carry normal epithelial labels. inferCNV infers copy-number changes from expression against a
 diploid reference; the aneuploid epithelium gets the single label `malignant`, and the 01_4
 annotation is re-run on the remaining cells.
@@ -29,6 +29,7 @@ export DATA_DIR=<data root>
 conda env create -f ../../environments/infercnv-r.yml # once
 bash infercnv_all.sh --dry-run # what is already done, what would run
 bash infercnv_all.sh --threads 12 # inputs + inferCNV on every cohort
+bash infercnv_all.sh --slurm --threads 12 # or the same as one job on the cluster
 # run by hand, in benchmark-py-r: call_malignant.ipynb
 conda activate benchmark-py-r
 python3 recelltypist_nonmalignant.py
@@ -53,8 +54,8 @@ the inputs (otherwise the prepare stage keeps the existing ones). Logs go to `lo
 ## Design
 
 - **Reference: immune cells, per patient.** The dataset has no normal tissue (BASE / PD1 / RTPD1
-  are three timepoints of the same tumour), so the diploid baseline comes from the immune cells of
-  each tumour: T/NK and myeloid, up to 1,000 each, as two separate groups so that a gene simply
+  are three timepoints of the same tumor), so the diploid baseline comes from the immune cells of
+  each tumor: T/NK and myeloid, up to 1,000 each, as two separate groups so that a gene simply
   higher in myeloid than in T cells is not read as a gain. One run per patient, because the
   residual is taken against the reference cells of the run. B/plasma cells are left out: their
   immunoglobulin loci would add structure on chr2, chr14 and chr22.
@@ -123,7 +124,7 @@ cohort plus `malignant_per_patient.png` from the notebook) and the tables (`../t
 `cnv_status.csv`, 619,693 rows. Epithelial cells by status:
 
 - 42,291 `malignant`, 2,749 `borderline`, 16,839 `non_malignant`, 13,573 `not_tested`.
-- 19 cohorts have at least 200 malignant cells, for 41,744 cells: the tumour subset of 03_2.
+- 20 cohorts have at least 100 malignant cells, for 41,943 cells: the tumor subset of 03_2.
 
 `cell_annotation.csv`, 619,693 rows. The 42,291 malignant cells are labelled `malignant`; the other
 577,402 are re-annotated. Their per-cell CellTypist prediction is identical to 01_4's; after

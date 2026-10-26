@@ -6,7 +6,7 @@ Conda/mamba environment files used across the thesis.
 
 | File | Env name | Where / when to use |
 |---|---|---|
-| `benchmark-py-r.yml` | `benchmark-py-r` | **Main environment.** Python 3.12 + GPU (PyTorch 2.13, CUDA 12.9: needed for the RTX 5070 Ti, Blackwell sm_120) + the R/Bioconductor stack (scran, batchelor, rpy2, anndata2ri) |
+| `benchmark-py-r.yml` | `benchmark-py-r` | **Main environment.** Python 3.12 + GPU (PyTorch 2.13, CUDA 12.9) + the R/Bioconductor stack (scran, batchelor, rpy2, anndata2ri) |
 | `scgen-py.yml` | `scgen-py` | **Isolated env for scGen only.** Old pinned deps (Python 3.9, `anndata 0.10`, `scanpy 1.9`, `torch 2.0`, `scvi-tools 0.19.0`, `scgen 2.1.0`) that conflict with the main stack, so scGen gets its own env. |
 | `cytotrace2-py.yml` | `cytotrace2-py` | **Isolated env for CytoTRACE2 only** (`03_drvi_tumoral_epi/03_5_cytotrace2`). `cytotrace2-py` pins `numpy<2.0.0`, so it cannot live beside the main stack; CPU-only torch, Python 3.11. |
 | `infercnv-r.yml` | `infercnv-r` | **Isolated env for inferCNV only** (`03_drvi_tumoral_epi/03_1_infercnv`). R 4.5 + `bioconductor-infercnv` + JAGS. R only (the Python half of that step runs in `benchmark-py-r`). |

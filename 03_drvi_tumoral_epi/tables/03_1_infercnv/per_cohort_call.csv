@@ -1,4 +1,4 @@
-cohort,malignant,borderline,non_malignant,not_tested,keep_200
+cohort,malignant,borderline,non_malignant,not_tested,kept_03_2
 Patient01,369,4,169,0,True
 Patient02,0,25,184,0,False
 Patient03,89,6,139,0,False
@@ -7,7 +7,7 @@ Patient05,94,3,279,0,False
 Patient06,0,0,0,14,False
 Patient07,0,0,0,257,False
 Patient09,471,0,0,0,True
-Patient10,199,226,1224,0,False
+Patient10,199,226,1224,0,True
 Patient11,1116,76,1,0,True
 Patient12,0,28,213,0,False
 Patient15,0,0,0,549,False

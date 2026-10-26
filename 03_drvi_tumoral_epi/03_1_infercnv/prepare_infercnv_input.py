@@ -3,7 +3,7 @@
 03_1 prepare_infercnv_input: per-cohort inferCNV inputs from shiao.h5ad
 
 There is no normal tissue in this dataset, so the diploid baseline comes from the immune
-cells of each tumour. One run per patient, so no cell is compared against another
+cells of each tumor. One run per patient, so no cell is compared against another
 patient's reference.
 
 Groups written for each cohort:
@@ -190,7 +190,7 @@ def main() -> int:
     counts_ds = sparse_dataset(h5["layers"]["counts"])
 
     assert RAW_LABEL_KEY in obs, (
-        f"obs['{RAW_LABEL_KEY}'] is needed to keep tumour cells out of the reference; "
+        f"obs['{RAW_LABEL_KEY}'] is needed to keep tumor cells out of the reference; "
         "it is written by 01_4/celltypist_annotation.py"
     )
     labels = obs[LABEL_KEY].astype(str)
@@ -247,7 +247,7 @@ def main() -> int:
         picked[GROUP_STROMAL] = stratified_sample(strata, N_STROMAL, rng)
 
         # Immune cells whose raw (pre-voting) CellTypist call is epithelial are excluded:
-        # majority voting can give a tumour cell an immune label.
+        # majority voting can give a tumor cell an immune label.
         pure = ~raw_c.isin(EPITHELIAL).to_numpy()
         is_imm = ((grp == GROUP_REF_T) | (grp == GROUP_REF_MYE)).to_numpy()
         imm = np.flatnonzero(is_imm & pure)
