@@ -1,8 +1,6 @@
 # Main analysis environment for the majority of the analysis (not only the benchmark)
 name: benchmark-py-r
 channels:
-  - pytorch
-  - nvidia
   - conda-forge
   - bioconda
 dependencies:
@@ -25,10 +23,11 @@ dependencies:
   - bbknn             
   - rpy2                
   - sra-tools
-  - pytorch
+  # CUDA build: the RTX 5070 Ti (Blackwell, sm_120) needs CUDA >= 12.8
+  - pytorch=2.13.0=cuda129*
+  - cuda-version=12.9
   - torchvision
   - torchaudio
-  - pytorch-cuda=12.4
 
   - r-base>=4.4
   - r-seurat            

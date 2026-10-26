@@ -125,6 +125,15 @@ cohort plus `malignant_per_patient.png` from the notebook) and the tables (`../t
 - 42,291 `malignant`, 2,749 `borderline`, 16,839 `non_malignant`, 13,573 `not_tested`.
 - 19 cohorts have at least 200 malignant cells, for 41,744 cells: the tumour subset of 03_2.
 
+`cell_annotation.csv`, 619,693 rows. The 42,291 malignant cells are labelled `malignant`; the other
+577,402 are re-annotated. Their per-cell CellTypist prediction is identical to 01_4's; after
+majority voting 127,727 (22.1%) change label, almost all between neighbouring subtypes
+(Macro-lipo ↔ Macro-IFN, CD4 ↔ CD8 subsets, B naive ↔ memory). Only 1,760 epithelial cells become
+non-epithelial and 1,755 the reverse.
+
+`recelltypist_nonmalignant.py --low-memory` runs the same annotation in blocks of 50,000 cells
+(peak 6.7 GB instead of >30 GB), and produced the table above.
+
 ## Notes
 
 - **`cnv_score` is not comparable with published values.** It is a mean of squares over the whole
