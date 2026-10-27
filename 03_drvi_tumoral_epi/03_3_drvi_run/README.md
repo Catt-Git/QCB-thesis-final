@@ -63,10 +63,10 @@ After the integration the cells are clustered with Leiden on the live (non-vanis
 dimensions: k = 15 neighbours, resolutions 0.25 - 2.0, each kept as `drvi_leiden_<res>` in the
 embedding. Clusters under 100 cells (`LEIDEN_MIN_CELLS`) are merged into the cluster that holds
 most of their kNN weight: they are a handful of cells cut off a larger group and add noise to
-every per-cluster reading. A small cluster with no edge to the rest of the graph (19 cells here)
-is kept as it is.
+every per-cluster reading. A small cluster with no edge to the rest of the graph is kept as it
+is.
 
-Resolution **1.5** (35 clusters) is the one the figures and 03_4 - 03_9 read, as `drvi_leiden`.
+Resolution **1.5** (34 clusters) is the one the figures and 03_4 - 03_9 read, as `drvi_leiden`.
 `umap_drvi_leiden_all_resolutions_drvi_tum_64_nomt.png` draws every resolution on the DRVI UMAP,
 `drvi_leiden_clusters_drvi_tum_64_nomt.csv` the clusters per resolution, before and after the
 merge. The constants live in `utils/cell_set.py` (`LEIDEN_*`); every random step of 03_3 uses

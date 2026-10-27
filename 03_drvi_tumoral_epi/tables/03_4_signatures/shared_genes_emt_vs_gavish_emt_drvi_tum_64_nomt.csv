@@ -1,0 +1,9 @@
+# shared_genes_emt_vs_gavish | collection emt (epithelial-mesenchymal transition (EMT)) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+,EMT_B_EPITHELIAL,EMT_B_HYBRID,EMT_B_MESENCHYMAL,MP12_EMT_1,MP13_EMT_2,MP14_EMT_3,MP15_EMT_4
+EMT_B_EPITHELIAL,27,0,0,0,1,6,0
+EMT_B_HYBRID,0,20,2,1,4,0,1
+EMT_B_MESENCHYMAL,0,2,33,6,5,2,2
+MP12_EMT_1,0,1,6,48,8,2,8
+MP13_EMT_2,1,4,5,8,50,9,3
+MP14_EMT_3,6,0,2,2,9,50,0
+MP15_EMT_4,0,1,2,8,3,0,49

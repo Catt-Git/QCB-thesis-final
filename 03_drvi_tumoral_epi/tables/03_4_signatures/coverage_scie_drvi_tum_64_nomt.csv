@@ -1,0 +1,12 @@
+# coverage | collection scie (stemness x immunogenicity (SCIE)) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+signature,axis,primary,provenance,n_genes,n_mapped,mapped_fraction,n_in_hvg_background,hvg_fraction_of_mapped
+HALLMARK_IFNA,immune,True,"Interferon Alpha response, MSigDB Hallmark",97,96,0.9896907216494846,50,0.5208333333333334
+HALLMARK_IFNG,immune,True,"Interferon Gamma response, MSigDB Hallmark",200,197,0.985,100,0.5076142131979695
+ISDS,immune,True,"IFN-Stem Cell-Down signature, PMC5481166",27,27,1.0,17,0.6296296296296297
+KEGG_APM,immune,True,"Antigen Presentation Machinery, KEGG",88,65,0.7386363636363636,31,0.47692307692307695
+IMMUNOGENIC_CONSENSUS,immune,True,"Curated by the lab from the KEGG APM signature, retaining only immunogenic genes and immunomodulators; primary immune readout",25,25,1.0,16,0.64
+BENPORATH_ES1,stemness,True,MSigDB BENPORATH_ES_1,378,368,0.9735449735449735,71,0.19293478260869565
+ESC_ASSOU,stemness,True,"PMC1906587, Table S3",1066,801,0.7514071294559099,139,0.1735330836454432
+ESC_WONG,stemness,True,MSigDB WONG_EMBRYONIC_STEM_CELL_CORE,335,297,0.8865671641791045,60,0.20202020202020202
+LIM_STEM,stemness,True,MSigDB LIM_MAMMARY_STEM_CELL_UP,479,465,0.9707724425887265,156,0.33548387096774196
+FMASC,stemness,True,"Fetal mammary stem cells, PMC3277444, Supplementary Table 2",1882,1693,0.8995749202975558,298,0.17601890135853515

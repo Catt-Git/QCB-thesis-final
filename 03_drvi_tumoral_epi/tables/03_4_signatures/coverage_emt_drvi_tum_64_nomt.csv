@@ -1,0 +1,5 @@
+# coverage | collection emt (epithelial-mesenchymal transition (EMT)) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+signature,axis,primary,provenance,n_genes,n_mapped,mapped_fraction,n_in_hvg_background,hvg_fraction_of_mapped
+EMT_B_EPITHELIAL,epithelial,True,"Collaborator list B (validated + non-validated), epithelial markers",28,27,0.9642857142857143,4,0.14814814814814814
+EMT_B_HYBRID,hybrid,True,"Collaborator list B, hybrid/partial-EMT markers",20,20,1.0,6,0.3
+EMT_B_MESENCHYMAL,mesenchymal,True,"Collaborator list B, mesenchymal markers",33,33,1.0,15,0.45454545454545453

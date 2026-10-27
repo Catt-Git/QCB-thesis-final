@@ -1,0 +1,5 @@
+# cytotrace2_by_phase | collection scie (stemness x immunogenicity (SCIE)) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+phase,mean,median,size
+G1,0.13178742079828346,0.11249149687852053,18840
+G2M,0.18176476205776854,0.1817181081348806,10291
+S,0.17471739829618319,0.14912920226308624,12812

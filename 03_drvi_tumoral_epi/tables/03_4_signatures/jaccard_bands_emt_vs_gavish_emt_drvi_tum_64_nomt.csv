@@ -1,0 +1,5 @@
+# jaccard_bands_emt_vs_gavish | collection emt (epithelial-mesenchymal transition (EMT)) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+band,n_pairs,median,min,max
+"lab x lab, different axis",3,0.0,0.0,0.0392
+"Gavish x Gavish, EMT MPs only",6,0.0601,0.0,0.0989
+lab x Gavish,12,0.0198,0.0,0.0845
