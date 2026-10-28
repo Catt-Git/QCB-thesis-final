@@ -1,0 +1,5 @@
+# signature_concentration | collection emt (epithelial-mesenchymal transition (EMT)) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+signature,axis,primary,n_mapped,effective_n_genes,effective_n_fraction,top_gene,top_gene_share_of_variance,top_gene_share_of_mean_signal,top_gene_detection_rate,top_gene_spearman_with_score,share_top3_of_variance,median_detection_rate,n_genes_below_noise_floor,frac_genes_below_noise_floor,frac_cells_all_zero,gini_of_mean_signal,flags
+EMT_B_EPITHELIAL,epithelial,True,27,10.2561,0.3799,KRT19,0.1448,0.1782,0.7938,0.5831,0.372,0.1976,1,0.037,0.0166,0.6276,none
+EMT_B_HYBRID,hybrid,True,20,3.7597,0.188,YBX1,0.2817,0.4786,0.7751,0.5457,0.5827,0.0708,3,0.15,0.1237,0.7238,"low_effective_n,undetectable_in_many_cells"
+EMT_B_MESENCHYMAL,mesenchymal,True,33,6.3656,0.1929,VIM,0.2737,0.2428,0.6617,0.6492,0.5048,0.0493,5,0.1515,0.0417,0.7521,low_effective_n

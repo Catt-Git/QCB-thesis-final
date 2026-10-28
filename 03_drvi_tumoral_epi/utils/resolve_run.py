@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Print `<run_id> <compartment> <out_root>` for the current environment, one line.
 
-Used by `signature_interpretation_all.sh`, so the run id (`cell_set`) and the output root
+Used by the `*_all.sh` drivers of 03_4 - 03_8, so the run id (`cell_set`) and the output root
 (`signature_common`, $OUT_ROOT) are not re-derived in bash.
 """
 import sys

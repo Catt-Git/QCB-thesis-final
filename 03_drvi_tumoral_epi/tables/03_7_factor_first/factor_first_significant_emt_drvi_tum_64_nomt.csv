@@ -1,0 +1,5 @@
+# factor_first_significant | collection emt (epithelial-mesenchymal transition (EMT)) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+dimension,collection,Gene_set,Term,Overlap,P-value,Adjusted P-value,Odds Ratio,Combined Score,direction,dim,fdr_bh_global,significant
+DR 11+,lab,gs_ind_0,EMT_B_MESENCHYMAL,7/15,0.00028880699727548757,0.0008664209918264628,8.17373461012312,66.61390935241329,+,DR 11,0.028014278735722296,True
+DR 17+,lab,gs_ind_0,EMT_B_MESENCHYMAL,8/15,3.0297665123778433e-05,6.0595330247556866e-05,10.5591341991342,109.86187724525526,+,DR 17,0.008816620551019524,True
+DR 26+,lab,gs_ind_0,EMT_B_MESENCHYMAL,7/15,0.00028880699727548757,0.0005776139945509751,8.17373461012312,66.61390935241329,+,DR 26,0.028014278735722296,True

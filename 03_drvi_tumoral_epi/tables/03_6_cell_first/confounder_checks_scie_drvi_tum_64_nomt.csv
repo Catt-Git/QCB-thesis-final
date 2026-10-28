@@ -1,0 +1,11 @@
+# confounder_checks | collection scie (stemness x immunogenicity (SCIE)) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+check,value
+phase_pct_G1_target,14.718934911242604
+phase_pct_G1_rest,46.99915899997452
+n_target_all_phases,2704.0
+n_target_within_G1_recomputed,1118.0
+jaccard_target_vs_G1_recomputed,0.3487544483985765
+median_depth_immunogenic_low,1128.5
+median_depth_rest,1488.0
+mannwhitney_p_depth,4.308038186172224e-71
+auroc_depth_predicts_immunogenic_low,0.5580331220725936

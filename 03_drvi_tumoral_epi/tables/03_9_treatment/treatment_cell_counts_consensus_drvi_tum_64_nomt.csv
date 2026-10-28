@@ -1,0 +1,22 @@
+# treatment_cell_counts | collection consensus (all three collections, read together) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+cohort,response,BASE,PD1,RTPD1
+Patient10,NR,63,136,0
+Patient17,NR,170,218,1998
+Patient26,NR,3439,1363,24
+Patient45,NR,310,1791,5
+Patient53,NR,1621,1901,137
+Patient64,NR,151,275,29
+Patient09,R1,279,149,43
+Patient16,R1,583,7098,3
+Patient43,R1,103,1558,1165
+Patient48,R1,58,414,0
+Patient01,R2,253,0,116
+Patient11,R2,729,385,2
+Patient18,R2,164,570,12
+Patient19,R2,357,311,251
+Patient20,R2,78,127,13
+Patient42,R2,6,272,0
+Patient46,R2,813,1320,85
+Patient47,R2,632,1942,127
+Patient56,R2,1803,3232,962
+Patient63,R2,44,2253,0

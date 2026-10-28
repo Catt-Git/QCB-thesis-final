@@ -93,4 +93,4 @@ The R methods also write a `02_integration/<run_id>.rds` intermediate, deleted o
 | `03_tum/shiao_tum_drvi_tum_64_nomt.h5ad` | 03_3, the definitive object with the latent space in `obsm['X_drvi']` |
 | `03_tum/cytotrace2_drvi_tum_64_nomt.csv` | 03_5, per-cell CytoTRACE2 scores |
 | `03_tum/signature_scores_<collection>_drvi_tum_64_nomt.csv` | 03_6, per-cell signature scores |
-| `03_tum/random_signature_scores_*`, `drvi_state_argmax*_drvi_tum_64_nomt.csv.gz` | 03_8, cached null draws and max(DR) assignments |
+| `03_tum/random_signature_scores_*`, `drvi_state_argmax*_drvi_tum_64_nomt.csv.gz` | 03_8 cached null draws, 03_8b max(DR) assignments |

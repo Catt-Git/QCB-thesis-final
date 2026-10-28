@@ -24,7 +24,7 @@ bash signatures_all.sh --dry-run                     # print what would run
 
 Existing outputs are skipped, so after a code change re-run with `--force`.
 `signature_composition_tum.py` is not in the wrapper: it needs the 03_6 scores, so
-`signature_interpretation_all.sh` runs it after 03_6.
+`../03_6_cell_first/cell_first_all.sh` runs it after 03_6.
 
 ## The files
 
@@ -66,6 +66,8 @@ signatures_<collection>_tum.gmt                  the collection as used (mapped 
 coverage_<collection>_drvi_tum_64_nomt.csv       per list: mapped fraction, HVG count
 jaccard_<collection>_drvi_tum_64_nomt.csv        pairwise overlap
 shared_genes_<collection>_drvi_tum_64_nomt.csv   the same as counts
+signature_concentration_<collection>_*.csv       signature_composition_tum.py: how many genes each score behaves as if it had
+signature_gene_contribution_<collection>_*.csv   the same, per gene
 ```
 
 Figures in `../figures/03_4_signatures/`. The `.gmt` is named after the object, not the run: it
@@ -77,7 +79,7 @@ depends only on the genes of `shiao_tum.h5ad`.
   heavily, so they are not independent tests. Not written for `emt`: one list per axis, nothing
   to compare.
 
-`EMT_B_EPITHELIAL` (4 genes) and `EMT_B_HYBRID` (5) have fewer than 10 genes in the HVG
+`EMT_B_EPITHELIAL` (4 genes) and `EMT_B_HYBRID` (6) have fewer than 10 genes in the HVG
 background, so they are weak on Route B; Route A still scores them in full.
 
 `gavish_tnbc` maps well (lowest `MP7_STRESS_IN_VITRO`, 0.880; `MP1_CELL_CYCLE_G2_M` 50/50), but
@@ -87,13 +89,14 @@ five metaprograms have fewer than 10 genes in the HVG panel:
 |---|---|
 | `MP4_CHROMATIN` | 3 |
 | `MP8_PROTEASOMAL_DEGRADATION` | 6 |
-| `MP9_UNFOLDED_PROTEIN_RESPONSE` | 4 |
+| `MP9_UNFOLDED_PROTEIN_RESPONSE` | 3 |
 | `MP20_MYC` | 5 |
-| `MP21_RESPIRATION` | 4 |
+| `MP21_RESPIRATION` | 3 |
 
 A low count limits power, it does not make the list untestable: `MP21_RESPIRATION` is still
-convergent on `DR 4+` (ρ 0.469, FDR 2.0e-03). These are housekeeping-like programmes, expressed
-everywhere and therefore not highly variable.
+convergent on `DR 3+` (ρ 0.389, FDR 8.7e-03), while `MP4_CHROMATIN` is the one metaprogram
+Route B never finds. These are housekeeping-like programs, expressed everywhere and therefore
+not highly variable.
 
 ## EMT twice: the collaborator's lists against Gavish's metaprograms
 

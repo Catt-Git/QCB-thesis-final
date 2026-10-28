@@ -1,0 +1,9 @@
+# states_vs_names | collection consensus (all three collections, read together) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+dim_direction,cluster,smi,status,resolution
+DR 33+,16,0.8720654670055231,unnamed,1.5
+DR 30-,20,0.7645164726941946,unnamed,1.5
+DR 11-,26,0.7744793319790462,unnamed,1.5
+DR 19-,29,0.8861511840654636,unnamed,1.5
+DR 41-,30,0.8997021429266168,unnamed,1.5
+DR 44+,32,0.8566709004007131,unnamed,1.5
+DR 6-,8,0.7898255889486265,unnamed,1.5

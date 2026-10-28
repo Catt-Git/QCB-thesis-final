@@ -1,0 +1,11 @@
+# confounder_checks | collection emt (epithelial-mesenchymal transition (EMT)) | DRVI run drvi_tum_64_nomt | vanished dimensions PRUNED | 03_4 - 03_8 signature interpretation
+check,value
+phase_pct_G1_target,46.86248331108144
+phase_pct_G1_rest,44.2699558126967
+n_target_all_phases,10486.0
+n_target_within_G1_recomputed,4710.0
+jaccard_target_vs_G1_recomputed,0.9584859584859585
+auroc_doublet_predicts_EMT_B_MESENCHYMAL_high,0.5643819141359153
+rho_doublet_score_EMT_B_MESENCHYMAL,0.22295490252684552
+pct_predicted_doublet_target,0.028609574670989894
+pct_predicted_doublet_rest,0.01907365610198048
