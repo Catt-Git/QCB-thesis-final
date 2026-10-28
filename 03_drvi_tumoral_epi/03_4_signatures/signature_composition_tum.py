@@ -25,13 +25,9 @@ import os
 import sys
 
 import anndata as ad
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.sparse as sp
-import seaborn as sns
 from scipy.stats import rankdata
 
 UTILS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "utils")
@@ -240,67 +236,6 @@ def main():
 
     C.write_table(summary_tbl.round(4), "signature_concentration", coll)
     C.write_table(genes_tbl.round(6), "signature_gene_contribution", coll, index=False)
-
-    # ----------------------------------------------------------------- figures
-    order = list(summary_tbl.index)
-    axis_colors = dict(zip(coll.axes, C.axis_palette(len(coll.axes))))
-
-    # One row per signature in panel A, height capped for gavish.
-    fig, axes = plt.subplots(1, 2, figsize=(13, C.fig_span(len(order), 0.42, 3.2, cap=20.0)))
-
-    # A. mapped genes vs the number the score behaves as if it had.
-    ax = axes[0]
-    y = np.arange(len(order))
-    ax.barh(y, summary_tbl["n_mapped"], color="0.85")
-    ax.barh(y, summary_tbl["effective_n_genes"],
-            color=[axis_colors[a] for a in summary_tbl["axis"]], height=0.55)
-    ax.axvline(MIN_EFFECTIVE_N_GENES, color="crimson", ls="--", lw=1)
-    for i, (n_m, e) in enumerate(zip(summary_tbl["n_mapped"], summary_tbl["effective_n_genes"])):
-        ax.text(n_m * 1.08, i, f"{e:.1f} / {n_m}", va="center", fontsize=7)
-    ax.set_xscale("log")
-    # Room for the label of the longest bar.
-    ax.set_xlim(1, summary_tbl["n_mapped"].max() * 4)
-    ax.set_yticks(y)
-    ax.set_yticklabels(order, fontsize=8)
-    ax.invert_yaxis()
-    ax.set_xlabel("genes (log scale)")
-    ax.set_title("How many genes each score actually uses", fontsize=10)
-    # Inner bars are coloured by axis: one legend patch per axis, plus the grey outer bar.
-    present_axes = [a for a in coll.axes if a in set(summary_tbl["axis"])]
-    handles = ([plt.Rectangle((0, 0), 1, 1, color="0.85")]
-               + [plt.Rectangle((0, 0), 1, 1, color=axis_colors[a]) for a in present_axes]
-               + [plt.Line2D([], [], color="crimson", ls="--", lw=1)])
-    labels = (["mapped genes"]
-              + [f"effective genes - {a}" for a in present_axes]
-              + [f"floor ({MIN_EFFECTIVE_N_GENES} genes)"])
-    ax.legend(handles, labels, fontsize=7, loc="upper center",
-              bbox_to_anchor=(0.5, -0.12), ncol=len(labels), frameon=False)
-
-    # B. cumulative variance share against gene rank: reaching 0.9 in three genes = a three-gene score.
-    ax = axes[1]
-    for name in order:
-        s = genes_tbl.loc[genes_tbl["signature"] == name, "share_of_score_variance"]
-        cum = np.cumsum(np.nan_to_num(s.to_numpy(), nan=0.0))
-        style = "-" if summary_tbl.loc[name, "flags"] == "none" else "--"
-        ax.plot(np.arange(1, len(cum) + 1), cum, style, lw=1.4,
-                color=axis_colors[summary_tbl.loc[name, "axis"]], label=name, alpha=0.85)
-    ax.axhline(0.9, color="0.5", lw=0.8, ls=":")
-    ax.text(1.05, 0.905, "90% of the score's variance", fontsize=7, color="0.4")
-    ax.set_xscale("log")
-    ax.set_xlabel("genes, ranked by their share of the score's variance (log scale)")
-    ax.set_ylabel("cumulative share of the score's variance")
-    ax.set_ylim(0, 1.05)
-    ax.set_title("Where each score's spread across cells comes from\n"
-                 "(dashed = flagged)", fontsize=10)
-    ax.legend(fontsize=6 if len(order) <= 12 else 5, ncol=2 if len(order) <= 12 else 4,
-              loc="lower right")
-
-    for a in axes:
-        sns.despine(ax=a)
-    fig.suptitle(f"{coll.title}: what is inside each signature score", fontsize=11)
-    fig.tight_layout()
-    C.savefig("signature_composition", "03_4_signatures", coll, fig)
-    plt.close(fig)
 
     print("\ndone.")
 

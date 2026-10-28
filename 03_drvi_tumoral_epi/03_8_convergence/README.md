@@ -81,7 +81,8 @@ a yes or a no. The magnitude of ρ is reported (`A_rho`, `max_rho`), never used 
 null directions reach it on `scie` (null p97.5 = 0.37), 3.5% on `gavish_tnbc`, 0.2% on `emt`,
 i.e. ~4, ~3 and ~0 of 98 directions by chance. On `drvi_tum_64_nomt`: **31 directions on 29
 dimensions** are named; one is a depth axis (`DR 1+`, `MP12_EMT_1`), the rest give **22 programs,
-38 bars on 30 directions of 28 dimensions** (8 directions named by two collections). Writes
+38 bars on 30 directions of 28 dimensions** (8 directions named by two collections); 31 = these
+30 + the depth axis `DR 1+`. Writes
 `dr_naming_consensus_*` and `program_dimensions_consensus_*` (the bars, read by `dr_umap_tum.py`
 and 03_9) in `../tables/03_8_convergence/`, and three figures:
 `programs_named_*` (per program: its directions and max ρ, plus in orange the 7 directions tied to

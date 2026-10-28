@@ -104,6 +104,53 @@ def jaccard(a: pd.Series, b: pd.Series) -> float:
     return inter / union if union else np.nan
 
 
+# Share of the definitions a cell needs for the one-panel plane (4 of 6 for scie); stricter
+# than the 03_6 consensus, which takes ceil(n/2).
+MEAN_PLANE_VOTE_FRACTION = 2 / 3
+
+
+def plane_mean_figure(z: pd.DataFrame, qdf: pd.DataFrame, planes, cut, coll, idx) -> None:
+    """One panel: the x readouts of the voting planes averaged, red = called by most definitions.
+
+    Only when every voting plane shares its y readout and rules (scie: stemness high x the
+    immune readout low); otherwise the mean of the x axes is not one axis.
+    """
+    if len(planes) < 3 or len({(pl.y, pl.y_rule, pl.x_rule) for pl in planes}) != 1 \
+            or planes[0].y is None:
+        return
+    y_name, y_rule, x_rule = planes[0].y, planes[0].y_rule, planes[0].x_rule
+    n = len(planes)
+    k = int(np.ceil(MEAN_PLANE_VOTE_FRACTION * n))
+    called = qdf[[pl.label for pl in planes]].sum(axis=1) >= k
+    # Mean of the within-stratum z-scores, not re-standardised: 0 is still the stratum mean.
+    zx = z[[f"z_{pl.x}" for pl in planes]].mean(axis=1)
+    zy = z[f"z_{y_name}"]
+    print(f"\none-panel plane: {int(called.sum()):,} cells called by >= {k} of {n} definitions")
+
+    x, y, tgt = zx.values[idx], zy.values[idx], called.values[idx]
+    fig, ax = plt.subplots(figsize=(5.2, 4.6))
+    ax.scatter(x[~tgt], y[~tgt], s=1.5, c="0.78", lw=0, rasterized=True)
+    ax.scatter(x[tgt], y[tgt], s=1.5, c="#C44E52", lw=0, rasterized=True)
+    q = {"high": cut.high_q, "low": cut.low_q}
+    ax.axhline(zy.quantile(q[y_rule]), color="k", ls="--", lw=0.8)
+    # The red set is not cut on the mean: this line is only a reference.
+    ax.axvline(zx.quantile(q[x_rule]), color="0.45", ls=":", lw=0.8)
+    ax.set_xlabel(f"mean z of the {n} {coll.axis_of.get(planes[0].x, 'x')} readouts "
+                  f"({x_rule}) (within {' x '.join(GROUPBY)})", fontsize=8)
+    ax.set_ylabel(f"z {y_name} ({y_rule})", fontsize=8)
+    ax.set_title(f"{int(called.sum()):,} cells called by at least {k} of {n} definitions",
+                 fontsize=9)
+    ax.tick_params(labelsize=7)
+    sns.despine(ax=ax)
+    fig.text(0.01, 0.005, f"dashed: q{q[y_rule]:.2f} of {y_name}; dotted: q{q[x_rule]:.2f} of "
+             f"the mean, a reference (red is the vote, not this cut). Readouts: "
+             f"{', '.join(pl.x for pl in planes)}.", fontsize=6, color="0.35", wrap=True)
+    fig.suptitle(f"Cell-first, {coll.short_title}: target region, one panel", fontsize=10)
+    fig.tight_layout(rect=[0, 0.05, 1, 0.97])
+    C.savefig(f"{coll.plane_figure}_mean", "03_6_cell_first", coll, fig)
+    plt.close(fig)
+
+
 def main():
     args = parse_args()
     coll = SC.resolve(args)
@@ -487,6 +534,8 @@ def main():
         fig.suptitle(f"Cell-first, {coll.short_title}: target region (red)", fontsize=10)
         fig.tight_layout(rect=[0, 0, 1, 0.95])
         savefig_close(coll.plane_figure, "03_6_cell_first", coll, fig)
+        # The same plane in one panel, beside the per-definition one.
+        plane_mean_figure(z, qdf, [pl for pl in planes if pl.in_consensus], cut, coll, idx)
 
         # quadrant stability; two definitions are one number, printed and in the table
         if stab is not None and len(labels) > 2:

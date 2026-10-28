@@ -137,7 +137,9 @@ def pruning_report(embed, threshold, batch_key, label_key, knn_sample, seed):
 def main():
     args = parse_args()
 
-    data_dir = Path(os.environ.get("DATA_DIR", "")).expanduser()
+    if not os.environ.get("DATA_DIR"):
+        raise SystemExit("set DATA_DIR to the datasets root")
+    data_dir = Path(os.environ["DATA_DIR"]).expanduser()
     if not data_dir.is_dir():
         raise SystemExit("set DATA_DIR to the datasets root")
 

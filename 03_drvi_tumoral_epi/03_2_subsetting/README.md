@@ -53,8 +53,7 @@ live on the cluster.
   of the same batch-aware ranking, reproducing scib's selection and checking it gene for gene
   against scib's own call; PCA, neighbours and UMAP run on this panel. The metallothioneins
   (`MT1*`, `MT2A`) and `MTRNR2L12` are nuclear genes and stay.
-- **Scrublet is not re-run**: of the 4,326 cells flagged as doublets in `shiao.h5ad`, 9 are in
-  this subset.
+- **Scrublet is not re-run**: the doublet filter of phase 01 already applies to these cells.
 
 ## Data layout
 

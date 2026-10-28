@@ -175,7 +175,7 @@ layout changes from run to run.
 | | cell cycle conservation |
 | | HVG conservation |
 
-Trajectory conservation, in the original paper, is not used here. Not every metric exists for every
+Trajectory conservation and kBET, both in the original paper, are not used here. Not every metric exists for every
 output type: `knn` output (BBKNN) supports only the graph metrics, and `embed` output has no HVG
 conservation, so the summary table has empty cells by construction. PCR batch is not computed on
 the scaled runs: per-batch scaling already removed the batch means from their reference, so the

@@ -86,8 +86,10 @@ On `gavish` (no target region) only `confounders`, `signature_scores`,
 `dim_signature_spearman` and `dimension_row_order` are written; the script prints what it skips.
 
 Figures in `../figures/03_6_cell_first/`: `dim_signature_heatmap_*` (every collection), the
-target plane with its cutoffs (`stemness_immunogenicity_plane_scie`, `emt_target_plane_emt`)
-and `quadrant_stability_scie`. In the heatmaps, one row per dimension: the direction is the sign of ρ,
+target plane with its cutoffs (`stemness_immunogenicity_plane_scie`, `emt_target_plane_emt`),
+`stemness_immunogenicity_plane_mean_scie` (the six scie planes in one panel: x the mean of
+the six stemness z-scores, red the cells called by at least 4 of 6 definitions, stricter than
+the consensus) and `quadrant_stability_scie`. In the heatmaps, one row per dimension: the direction is the sign of ρ,
 written on the colorbar, and is what makes Route A joinable with Route B in 03_8. Vanished
 dimensions are pruned (`PRUNE_VANISHED` in `utils/signature_common.py`).
 

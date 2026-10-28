@@ -33,7 +33,7 @@ Existing outputs are skipped, so after a code change re-run with `--force`.
 | `signatures_all.sh` | runs `build_signatures_tum.py` on scie, emt and gavish, then `emt_vs_gavish_tum.py`; `--slurm` for the cluster |
 | `build_signatures_tum.py` | lists → `.gmt`, coverage, Jaccard, the two figures |
 | `emt_vs_gavish_tum.py` | do the collaborator's EMT lists and Gavish's EMT metaprograms name the same genes? |
-| `signature_composition_tum.py` | which genes carry each score, and are they measurable. Runs after 03_6, to join the real scores |
+| `signature_composition_tum.py` | which genes carry each score, and are they measurable (tables only, no figure). Runs after 03_6, to join the real scores |
 
 One script at a time:
 
