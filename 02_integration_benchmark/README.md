@@ -154,8 +154,9 @@ DRVI is outside `run_all.sh` because its latent size was chosen by looking at th
 The notebook `shiao_drvi_128.ipynb` and `run_drvi.py` do the same run with the same outputs;
 `submit_drvi.slurm` runs the script on the cluster (CPU, partition `long`).
 
-**Vanished dimensions.** The DRVI paper calls a latent dimension vanished when its maximum absolute
-value is below 1 and evaluates the embedding without them, while the metrics here read all 128
+**Vanished dimensions.** DRVI flags a latent dimension as vanished when its maximum absolute value
+is below a threshold (0.5 here, `vanished_threshold` as in the DRVI tutorial) and the embedding is
+normally read without them, while the metrics here read all 128
 dimensions. `02_3_plot_method_umap/plot_drvi_pruned_umap.py --report-only` checks the effect: the
 63 vanished dimensions hold 8.6e-06 of the latent variance and the 15-nearest-neighbour graph,
 on which every scIB metric is built, is 99.997% identical with and without them. The scores are

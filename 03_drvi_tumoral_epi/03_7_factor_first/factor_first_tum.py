@@ -44,7 +44,7 @@ def parse_args():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     SC.add_argument(p)
     p.add_argument("--n-top-genes", type=int, default=200,
-                   help="genes per dimension-direction handed to the ORA (default 200, as in 03_3)")
+                   help="genes per dimension-direction handed to the ORA (default 200)")
     p.add_argument("--overwrite", action="store_true", help="re-run the enrichment instead of reusing the table")
     return p.parse_args()
 
@@ -60,7 +60,7 @@ def main():
     # Not collection-scoped: the top genes come off the decoder alone.
     top_tsv = C.top_genes_tsv(N_TOP)
 
-    # ------------------------------------------------------------------ input
+    # input
     embed = ad.read_h5ad(C.EMBED_H5AD)
     hvg = ad.read_h5ad(C.HVG_H5AD, backed="r")
     gene_names = hvg.var_names.copy()
@@ -74,7 +74,7 @@ def main():
           f"({n_van} flagged vanished in var['vanished'], PRUNED per direction below)")
     print(f"{len(gene_names):,} HVGs, the DRVI training feature set and the ORA background")
 
-    # -------------------------------------------- per-direction top gene lists
+    # per-direction top gene lists
     scores_df = C.interpretability_scores(embed, gene_names, key=C.SCORE_KEY)
     n_dir = scores_df.shape[1]
     print(f"\n{scores_df.shape[0]:,} genes x {n_dir} dimension-directions "
@@ -89,7 +89,7 @@ def main():
     pd.DataFrame(top_genes, index=pd.RangeIndex(1, N_TOP + 1, name="rank")).to_csv(top_tsv, sep="\t")
     print(f"[write] {top_tsv}")
 
-    # ------------------------------------------------------------- gene sets
+    # gene sets
     custom = C.read_gmt(C.gmt_path(coll))
     # ORA can only ever test the part of a signature that lives in the background.
     custom_bg = {k: [g for g in v if g in set(gene_names)] for k, v in custom.items()}
@@ -103,7 +103,7 @@ def main():
 
     background = list(gene_names)
 
-    # ------------------------------------------------------------- enrichment
+    # enrichment
     if enrich_tsv.exists() and not args.overwrite:
         print(f"\n[read] {enrich_tsv} (--overwrite to re-run)")
         long = pd.read_csv(enrich_tsv, sep="\t")
@@ -136,7 +136,7 @@ def main():
     long["direction"] = long["dimension"].str[-1]
     long["dim"] = long["dimension"].str[:-1].str.strip()
 
-    # ------------------------------------------------------------------ BH
+    # BH
     # Once across all pairs tested; pairs with no overlap are absent from gseapy's output but
     # belong in the denominator, so they are added back as p = 1.
     C.banner("Benjamini-Hochberg across all dimension-direction / gene-set pairs")
@@ -161,7 +161,7 @@ def main():
 
     long.to_csv(enrich_tsv, sep="\t", index=False)
 
-    # ------------------------------------------------- signed matrix, Route A order
+    # signed matrix, Route A order
     order_tbl = C.read_table("dimension_row_order", coll)
     row_order = order_tbl.index.tolist()
     print(f"\nrow order taken from Route A: {len(row_order)} dimensions")
@@ -190,7 +190,7 @@ def main():
     print("\nsignificant dimension-directions per signature (global FDR)")
     print(n_hit.to_string())
 
-    # ---------------------------------------------------------------- figure
+    # figure
     fig, ax = plt.subplots(figsize=(C.fig_span(len(fig_cols), 1.0, 4.0),
                                     C.fig_span(len(row_order), 0.24, 3.0)))
     vmax = float(np.nanpercentile(signed.abs().values, 99)) or 1.0
